@@ -4,11 +4,15 @@
 #include <cassert>
 #include "sq_matmul_base.cuh"
 
+
 using namespace std;
 
 
 __global__
 void sq_matmul_tiled(float* A, float* B, float* C, int N){
+    /*
+     *  swapping i, j will lead to performance change -> memory coalescing
+     */
     // int j = blockDim.y * blockIdx.y + threadIdx.y;
     // int i = blockDim.x * blockIdx.x + threadIdx.x;
     int i = blockDim.y * blockIdx.y + threadIdx.y;
