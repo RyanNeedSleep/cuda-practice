@@ -2,32 +2,13 @@
 #include <iostream>
 #include <cuda_runtime.h>
 #include <cassert>
-#include "sq_matmul_base.cuh"
-
+#include <cmath>
+#include "sq_matmul.cuh"
 
 using namespace std;
 
-
-__global__
-void sq_matmul_tiled(float* A, float* B, float* C, int N){
-    /*
-     *  swapping i, j will lead to performance change -> memory coalescing
-     */
-    // int j = blockDim.y * blockIdx.y + threadIdx.y;
-    // int i = blockDim.x * blockIdx.x + threadIdx.x;
-    int i = blockDim.y * blockIdx.y + threadIdx.y;
-    int j = blockDim.x * blockIdx.x + threadIdx.x;
-
-    if (i < N && j < N){
-        float value = 0.0f;
-        for (int k = 0; k < N; ++k){
-            value += A[i * N + k] * B[k * N + j];
-        }
-        C[i * N + j] = value;
-    }
-    return;
-}
-
+// SELECT TYPE OF IMPLEMENTATION
+const string TYPE = "coalesced";
 int ARRAY_SIZE = 64;
 
 int main(void){
@@ -44,7 +25,7 @@ int main(void){
        }
    }
 
-   launch_sq_matmul(A, B, C, ARRAY_SIZE);
+   launch_sq_matmul(A, B, C, ARRAY_SIZE, TYPE);
 
    cudaDeviceSynchronize();
 
