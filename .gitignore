@@ -1,2 +1,4 @@
 *.nsys-rep
 *.sqlite
+.clangd
+zed.toml
