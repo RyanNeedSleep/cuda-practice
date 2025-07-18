@@ -8,8 +8,8 @@
 using namespace std;
 
 // SELECT TYPE OF IMPLEMENTATION
-const string TYPE = "coalesced";
-int ARRAY_SIZE = 64;
+const string TYPE = "shared";
+int ARRAY_SIZE = 1024;
 
 int main(void){
    float* A, *B, *C;
